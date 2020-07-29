@@ -1,0 +1,6 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+
+/udd-client-app/node_modules
+/udd-server-app/node_modules
+/udd-client-app/dist
+/udd-server-app/dist

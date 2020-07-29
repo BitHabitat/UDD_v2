@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./contents/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="./contents/bootstrap/sidebar/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/css/ol.css" type="text/css">
+    <script>require('bootstrap');</script>
+    <style>
+      #map {position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px;}
+    </style>
+
+    <title>UDD - Tòtem</title>
+  </head>
+  <body>
+
+    <!-- START: map screen -->
+    <div id="mapBackground" class="background-screens" style="display:block;">   
+       <div id="map" ></div>
+       <p id="attributionMap" class="map-attribution"><a href="https://www.mapbox.com/map-feedback/" target="_blank">&copy; Mapbox</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p>
+    </div>
+
+     <div id="overlay" class="popup-map"></div>
+
+    <nav id="sidebar" class="hide" >
+      <div class="p-4 pt-5">
+        <!--<h5>Mapes</h5>-->
+
+           <div class="refresh-data">
+          <p><a href="#" id="ReloadButtonSanitat"><svg class="bi bi-arrow-clockwise" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M3.17 6.706a5 5 0 017.103-3.16.5.5 0 10.454-.892A6 6 0 1013.455 5.5a.5.5 0 00-.91.417 5 5 0 11-9.375.789z" clip-rule="evenodd"/> <path fill-rule="evenodd" d="M8.147.146a.5.5 0 01.707 0l2.5 2.5a.5.5 0 010 .708l-2.5 2.5a.5.5 0 11-.707-.708L10.293 3 8.147.854a.5.5 0 010-.708z" clip-rule="evenodd"/></svg></a>
+            Dades obtingudes d'Open Data BCN
+          </p>
+       
+        </div>
+        <div class="tagcloud">
+                <a href="#" id="light" class="tag-cloud-link">LIGHT</a>
+                <a href="#" id="dark" class="tag-cloud-link">DARK</a>
+                <a href="#" id="satellite" class="tag-cloud-link">ORTOFOTO</a>
+        </div>
+        <br>
+        <div style="height: 28px;"><svg id="arrowScrollUp" style="margin-left: 128px;" class="bi bi-chevron-compact-up" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M7.776 5.553a.5.5 0 0 1 .448 0l6 3a.5.5 0 1 1-.448.894L8 6.56 2.224 9.447a.5.5 0 1 1-.448-.894l6-3z"/>
+        </svg></div>
+        <div class="scroll-gradient">
+        <div id="scrollSection" style=" width: 95%; height: 756px; overflow-y: scroll; overflow-x: hidden;">
+          <ul class="list-unstyled components mb-5">
+          <li>
+              <a href="#pageSubmenu1" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><b>Sanitat </b>
+              </a>
+              <ul class="collapse list-unstyled" id="pageSubmenu1">
+                <li>
+                  <label class="container">
+                    <div class="containerTitle">Farmàcies</div>
+                    <input id="pharmacyButton" type="checkbox">
+                    <span class="checkmark1"></span>
+                  </label>
+                </li>
+
+                 <li>
+                  <label class="container">
+                    <div class="containerTitle">CAP i hospitals</div>
+                    <input id="hospitalsButton" type="checkbox" >
+                    <span class="checkmark2"></span>
+                  </label>
+                </li>
+              </ul>
+          </li>
+
+           <li>
+            <a href="#pageSubmenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><b>Comerç</b></a>
+            <ul class="collapse list-unstyled" id="pageSubmenu2">
+                <li>
+                  <label class="container">
+                    <div class="containerTitle">Mercats</div>
+                    <input id="marketButton" type="checkbox" >
+                    <span class="checkmark3"></span>
+                  </label>
+                </li>
+
+                <li>
+                   
+                  <label class="container">
+                    <div class="containerTitle">Activitats comercials en planta baixa 2019</div>
+                    <input href="#pageSubmenu21" id="comercialButton" type="checkbox" data-toggle="collapse" class="dropdown-togglet">
+                    <span class="checkmark4"></span>
+                  </label>
+
+                  <ul class="collapse list-unstyled" id="pageSubmenu21">
+                    <li>
+                      <!--<div class="containerTitle">Activitats</div>-->
+                      <!--<h5>Activitats</h5>-->
+
+                      <label class="container">
+                        <input href="#pageSubmenu3" id="allComercial" type="checkbox" data-toggle="collapse" class="dropdown-togglet">
+                        <div class="containerTitle">Activitats </div>
+                        <span class="checkmark8"></span>
+
+                        <div style=" position:absolute;top:5px;margin-left: 195px;">
+                          <div  id="loadingallComercial" style="display:none;">
+                            <div class="d-flex justify-content-center">
+                                <div class="spinner-border-small" role="status">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </label>
+                     
+                        <ul class="collapse list-unstyled" id="pageSubmenu3">
+                          <li>
+                            <label class="container">
+                              <input id="alimentari" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;">Quotidià alimentari </div>
+                              <span class="checkmark19"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingalimentari" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+                          <li>
+                            <label class="container">
+                              <input id="noAlimentari" type="checkbox">
+                              <div class="containerTitle" style="font-size: 14px;"> Quotidià no alimentari</div>
+                              <span class="checkmark18"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingnoAlimentari" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+
+                          <li>
+                            <label class="container">
+                              <input id="llar" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;">Parament de la llar</div>
+                              <span class="checkmark20"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingllar" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+
+                          <li>
+                            <label class="container">
+                              <input id="ensenyament" type="checkbox">
+                              <span class="checkmark16"></span>
+                              <div class="containerTitle" style="font-size: 14px;">Ensenyament</div>
+                              
+                            
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingensenyament" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+                         
+                         <li>
+                            <label class="container">
+                              <input id="sanitat" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;">Sanitat i assistència</div>
+                              <span class="checkmark15"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingsanitat" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+
+                          <li>
+                            <label class="container">
+                              <input id="recreatius" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;">Equipaments culturals i recreatius</div>
+                              <span class="checkmark13"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingrecreatius" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+                          <li>
+                            <label class="container">
+                              <input id="oci" type="checkbox">
+                              <div class="containerTitle" style="font-size: 14px;">Oci i cultura</div>
+                              <span class="checkmark12"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingoci" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                            </label>
+                          </li>
+
+                          <li>
+                            <label class="container">
+                              <input id="personal" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;"> Equipament personal</div>
+                              <span class="checkmark17"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingpersonal" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                            </label>
+                          </li>
+
+
+                          <li>
+                            <label class="container">
+                              <input id="finances" type="checkbox">
+                              <div class="containerTitle" style="font-size: 14px;">Finances i assegurances</div>
+                              <span class="checkmark14"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingfinances" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+
+                          <li>
+                            <label class="container">
+                              <input id="restaurants" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;">Restaurants, bars i hotels</div>
+                              <span class="checkmark22"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingrestaurants" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+                          <li>
+                            <label class="container">
+                              <input id="manteniment" type="checkbox">
+                              <div class="containerTitle" style="font-size: 14px;">Manteniment, neteja i producció</div>
+                              <span class="checkmark10"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingmanteniment" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </label>
+                          </li>
+
+
+                          <li>
+                            <label class="container">
+                              <input id="reparacions" type="checkbox">
+                              <div class="containerTitle" style="font-size: 14px;">Reparacions</div>
+                              <span class="checkmark11"></span>
+
+                               <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingreparacions" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                            </label>
+                          </li>
+
+                          <li>
+                            <label class="container">
+                              <input id="automocio" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;">Automoció</div>
+                              <span class="checkmark21"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingautomocio" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+                          <li>
+                            <label class="container">
+                              <input id="inmobiliaria" type="checkbox">
+                              <div class="containerTitle" style="font-size: 14px;">Activitats immobiliàries</div>
+                              <span class="checkmark9"></span>
+                              
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadinginmobiliaria" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+
+                          <li>
+                            <label class="container">
+                              <input id="noDefinit" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;">Grup no definit</div>
+                              <span class="checkmark24"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingnoDefinit" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                            </label>
+                          </li>
+
+                          <li>
+                            <label class="container">
+                              <input id="altres" type="checkbox" >
+                              <div class="containerTitle" style="font-size: 14px;">Altres</div>
+                              <span class="checkmark23"></span>
+
+                              <div style=" position:absolute;top:5px;margin-left: 195px;">
+                                <div  id="loadingaltres" style="display:none;">
+                                  <div class="d-flex justify-content-center">
+                                      <div class="spinner-border-small" role="status">
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </label>
+                          </li>
+                        </ul>
+                      <!--</div>-->
+                    </li>
+
+                    <li>
+                      <label class="container">
+                        <input id="ociNocturn" type="checkbox" >
+                        <div class="containerTitle">Oci Nocturn</div>
+                        <span class="checkmark5"></span>
+
+
+                      </label>
+                    </li>
+
+                    <li>
+                      <label class="container">
+                        <input id="open24" type="checkbox" >
+                        <div class="containerTitle">Obert 24hs</div>
+                        <span class="checkmark6"></span>
+
+
+                      </label>
+                    </li>
+
+                    <li>
+                      <label class="container">
+                        <input id="coworking" type="checkbox" >
+                        <div class="containerTitle">Coworkings</div>
+                        <span class="checkmark7"></span>
+                      </label>
+                    </li>
+                  </ul>
+                </li>
+            </ul>
+
+          </li>
+        </ul>
+        </div> 
+
+        </div>   
+
+        <div style="height: 28px;">
+          <svg id="arrowScrollDown" style="margin-left: 128px;" class="bi bi-chevron-compact-down" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"/>
+          </svg>   
+        </div>
+      </div>
+
+      <img src="./resources/img/BIT-HABITAT-AJ-BCN-V-ESQ-G.png" alt="Bit Habitat" style="width: 114%;">
+
+    </nav>
+
+    
+
+     <div id="loading" >
+       <!--<p style="margin-left: 46%; margin-top: 25%;">Carregant...</p>-->
+      <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+          </div>
+      </div>
+
+     </div>
+
+    <!-- END: map screen -->
+
+
+    <!-- START: Touch screen to start screen-->
+    <div id="initScreen" style="display:block; position: absolute; top: 0px;" class="background-screens" >
+
+      <img src="./resources/img/logo_ajuntament.png" alt="Ajuntament de Barcelona" width="12%"  style="margin-left: 43%; margin-top: 17%">
+      <img src="./resources/img/sprite-bit-02.svg" alt="Bit Habitat" width="500" height="200" style="margin-left: 35%; margin-top: -4%">
+      
+      <div style="margin-left: 46%; color:white;"> Toca la pantalla </div>
+      
+    </div>
+    <!-- END: Touch screen to start screen-->
+
+    <!-- You can also require other files to run in this process -->
+    <script>
+      module.id = '.';
+      module.path = '.';
+      require = require('esm')(module);
+      require('./renderer.js')
+      
+    </script>
+    <!--<script src="./renderer.js"></script>-->
+  </body>
+</html>
