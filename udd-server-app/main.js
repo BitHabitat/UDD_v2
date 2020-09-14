@@ -25,8 +25,8 @@ osc1.on('open', () => {
 
 osc1.on('error', (err) => {
   // an error occurred
-  consolo.log("OSC ERROR!!!")
-  consolo.log(err)
+  console.log("OSC ERROR!!!")
+  console.log(err)
 });
 
 function createWindow () {
@@ -199,4 +199,11 @@ osc1.on('/mapBackground', message => {
 osc1.on('/screensaver', message => {
   mainWindow.webContents.send('blockScreen', message.args);
 })
+
+
+//JG
+osc1.on('/map2', message => {
+  mainWindow.webContents.send('map2', message.args);
+})
+
 

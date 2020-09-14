@@ -850,6 +850,26 @@ ipcRenderer.on('toggleLayerActivitats', function(event, message){
 });
 
 
+//JG INI
+ipcRenderer.on('map2', function(event, message){
+  change_map();
+});
+function change_map(){
+  //alert("h");
+  var x = document.getElementById("map00");
+  var y = document.getElementById("mapBackground");
+  if(x.style.display === "none") {
+    y.style.display = "none";x.style.display = "inline-block";
+  }
+  else {
+    x.style.display = "none";y.style.display = "block";
+  }
+  //themap=document.getElementById("map").style.display;
+  //if(themap=="none") {document.getElementById("map").style.display="inline-block";document.getElementById("map2").style.display="none";}
+  //else {document.getElementById("map2").style.display="inline-block";document.getElementById("map").style.display="none";}
+}
+//JG FIN
+
 //-----------------------------------OLD------------------------
 var fullscreen = false;
 document.addEventListener("keydown", event => {
