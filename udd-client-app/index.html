@@ -8,15 +8,24 @@
     <link rel="stylesheet" href="./contents/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="./contents/bootstrap/sidebar/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/css/ol.css" type="text/css">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.2.0/mapbox-gl-draw.css" type="text/css" />
     <script>require('bootstrap');</script>
     <style>
       #map {position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px;}
+      #map00 { background:#aa9933;position: absolute; top: 0px; width: 100%; left:0px;height:100vh;}
+      #control_map {z-index:9999;position: fixed; left:0px; bottom: 10px;background:#444;color:#fff;z-index:9;width:150px;text-align: center;}
+      #control_map2 {z-index:9999;position: fixed; left:calc(50% - 75px);bottom: 10px;background:#444;color:#fff;z-index:9;width:150px;text-align: center;}
+      #control_map3 {z-index:9999;position: fixed; right:10px;bottom: 10px;background:#444;color:#fff;z-index:9;width:150px;text-align: center;}
     </style>
 
     <title>UDD - Tòtem</title>
   </head>
   <body>
 
+    <div id="map00" style="display:inline-block;"></div>
     <!-- START: map screen -->
     <div id="mapBackground" class="background-screens" style="display:block;">   
        <div id="map" ></div>
@@ -460,7 +469,10 @@
     </nav>
 
     
-
+    <div id="control_map">CHANGE</div>
+    <div id="control_map2">CHANGE2send</div>
+    <div id="control_map3">CHANGE3dis</div>
+    
      <div id="loading" >
        <!--<p style="margin-left: 46%; margin-top: 25%;">Carregant...</p>-->
       <div class="d-flex justify-content-center">
@@ -490,6 +502,40 @@
       module.path = '.';
       require = require('esm')(module);
       require('./renderer.js')
+
+
+      mapboxgl.accessToken = 'pk.eyJ1IjoiY29yb2xhcmkiLCJhIjoiY2tkN2l2dHltMDNmcjJ4cGNtamI1ano1aSJ9.TDO_vejWTmNAc2gnc3f7Dw';
+      var map00 = new mapboxgl.Map({
+      container: 'map00',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [2.2021, 41.4112],
+      zoom: 14
+      });
+      // Add geolocate control to the map.
+      map00.addControl(
+      new mapboxgl.GeolocateControl({
+      positionOptions: {
+      enableHighAccuracy: true
+      },
+      trackUserLocation: true
+      })
+      );
+
+      // Add navigation control to the map.
+      map00.addControl(new mapboxgl.NavigationControl());
+      
+      var Draw = new MapboxDraw();
+      map00.addControl(Draw, 'top-left');
+
+      var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+      '<br><a href="https://wimabooks.com" target="_blank">HOLA!</a><br><br><a href="https://wimabooks.com/maps/workspace" target="_blank">WORKING</a><br><br><a href="https://cityfov.com">FOR YOU</a><br>'
+      );
+      
+      var marker = new mapboxgl.Marker()
+      .setLngLat([2.2021, 41.4112])
+      .setPopup(popup)
+      .addTo(map00);
+
       
     </script>
     <!--<script src="./renderer.js"></script>-->

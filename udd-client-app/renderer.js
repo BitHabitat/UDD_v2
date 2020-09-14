@@ -36,6 +36,50 @@ import Zoom from 'ol/control/Zoom';
 import Rotate from 'ol/control/Rotate';
 
 
+//JG INI
+$('#control_map').click(function() {change_map();});
+$('#control_map2').click(function() {change_map2();});
+$('#control_map3').click(function() {change_map3();});
+function change_map3(){
+  //alert("d");
+  var x = document.getElementById("map00");
+  var y = document.getElementById("mapBackground");
+  var z = document.getElementById("sidebar");
+  if(x.style.display === "none") {
+    y.style.display = "none";z.style.display = "none";x.style.display = "inline-block";
+  }
+  else {
+    x.style.display = "none";y.style.display = "block";z.style.display = "block";
+  }
+}
+function change_map2(){
+  //alert("d");
+  sendOSCMessageToServer("map2", "true");
+}
+function change_map(){
+  //alert("d");
+  sendOSCMessageToServer("map2", "true");
+  //alert("dd");
+  var x = document.getElementById("map00");
+  var y = document.getElementById("mapBackground");
+  var z = document.getElementById("sidebar");
+  if(x.style.display === "none") {
+    y.style.display = "none";z.style.display = "none";x.style.display = "block";
+  }
+  else {
+    x.style.display = "none";y.style.display = "block";z.style.display = "block";
+  }
+  //document.getElementById("map2").style.display="inline-block";
+  //themap=document.getElementById("map").style.display;
+  //if(themap=="none") {document.getElementById("map").style.display="inline-block";document.getElementById("map2").style.display="none";}
+  //else {document.getElementById("map2").style.display="inline-block";document.getElementById("map").style.display="none";}
+  //if (osc.status() === OSC.STATUS.IS_OPEN) {
+  //  const message = new OSC.Message('/map2', "true");
+  //  osc.send(message); 
+  //} 
+}
+//JG FI
+
 //Read config file
 
 
@@ -1036,19 +1080,22 @@ $( "#ReloadButtonSanitat" ).click(function() {
   toggleLoading();
   downloadAndSaveData();
   
-  /*storage.clear(function(error) {
-    if (error){
-      throw error;
-    }else{
-      downloadAndSaveData();
-    } 
-  });*/
+  //storage.clear(function(error) {
+    //if (error){
+      //throw error;
+    //}else{
+      //downloadAndSaveData();
+    //} 
+  //});
  
 });
 
 
 function toggleLoading(){
   $('#loading').toggleClass('loading-show');
+  //var x = document.getElementById("map00");
+  //var y = document.getElementById("mapBackground");
+  //y.style.display = "none";x.style.display = "inline-block";
 }
 
 
