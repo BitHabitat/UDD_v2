@@ -1,5 +1,5 @@
 {
-  "name": "UDD-Videowall",
+  "name": "udd-videowall",
   "version": "1.0.0",
   "description": "UDD server app",
   "main": "index.js",
@@ -10,11 +10,12 @@
   },
   "author": "Indissoluble",
   "devDependencies": {
-    "electron": "^9.0.0",
+    "electron": "^9.3.0",
     "electron-builder": "^21.2.0",
     "electron-packager": "^14.2.1",
     "electron-prebuilt-compile": "^8.2.0",
     "electron-rebuild": "^1.11.0",
+    "git": "^0.1.5",
     "parcel-bundler": "^1.12.4"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "electron-json-storage": "^4.1.8",
     "esm": "^3.2.25",
     "jquery": "^3.5.1",
+    "mapbox-gl": "^1.12.0",
     "ol": "^6.3.1",
     "ol-commonjs": "^5.3.0",
     "ol-ext": "^3.1.12",
@@ -37,5 +39,6 @@
     "mac": {
       "category": "indissoluble.udd.video.wall"
     }
-  }
+  },
+  "license": "ISC"
 }

@@ -53,6 +53,19 @@ mapBasic = new ol.Map({
   target: 'map'
 });
 
+var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+//var mapboxgl = require("https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js");
+mapboxgl.accessToken = 'pk.eyJ1IjoiY29yb2xhcmkiLCJhIjoiY2tkN2l2dHltMDNmcjJ4cGNtamI1ano1aSJ9.TDO_vejWTmNAc2gnc3f7Dw';
+var map00;
+map00 = new mapboxgl.Map({
+  container: 'map00',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  //style: 'mapbox://bithabitat/ckc09tyw700jd1ip7m70db10c',
+  center: [2.2021, 41.4112],
+  zoom: 14
+  });
+
+
 var control;
 function scaleControl() {
   control = new ScaleLine({
@@ -868,6 +881,20 @@ function change_map(){
   //if(themap=="none") {document.getElementById("map").style.display="inline-block";document.getElementById("map2").style.display="none";}
   //else {document.getElementById("map2").style.display="inline-block";document.getElementById("map").style.display="none";}
 }
+
+ipcRenderer.on('layersb', function(event, message){
+  //switchLayer0(message[0]);
+  switchLayer0("light-v10");
+});
+function switchLayer0(layid) {console.log(layid);
+  map00.setStyle('mapbox://styles/mapbox/' + layid);
+  ////var layerId = layer.target.id;console.log(layerId);
+  ////map00.setLayoutProperty('3d-buildings', 'visibility', 'visible');
+  //map00.removeLayer('3d-buildings');
+  //setTimeout(function() {put_layer3dB_0();},1000);
+  }
+  
+
 //JG FIN
 
 //-----------------------------------OLD------------------------

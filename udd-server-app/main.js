@@ -205,5 +205,8 @@ osc1.on('/screensaver', message => {
 osc1.on('/map2', message => {
   mainWindow.webContents.send('map2', message.args);
 })
+osc1.on('/layersb', message => {
+  mainWindow.webContents.send('layersb', message.args);
+})
 
 
