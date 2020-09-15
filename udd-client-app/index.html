@@ -19,6 +19,7 @@
       #control_map {z-index:9999;position: fixed; left:0px; bottom: 10px;background:#444;color:#fff;z-index:9;width:150px;text-align: center;}
       #control_map2 {z-index:9999;position: fixed; left:calc(50% - 75px);bottom: 10px;background:#444;color:#fff;z-index:9;width:150px;text-align: center;}
       #control_map3 {z-index:9999;position: fixed; right:10px;bottom: 10px;background:#444;color:#fff;z-index:9;width:150px;text-align: center;}
+      #menu {position: absolute;background: #fff;padding: 10px;font-family: 'Open Sans', sans-serif;left:60px;}
     </style>
 
     <title>UDD - Tòtem</title>
@@ -26,6 +27,19 @@
   <body>
 
     <div id="map00" style="display:inline-block;"></div>
+    <div id="menu">
+      <input id="streets-v11" type="radio" name="rtoggle" value="streets" checked="checked" />
+      <label for="streets-v11">streets</label>
+      <input id="light-v10" type="radio" name="rtoggle" value="light" />
+      <label for="light-v10">light</label>
+      <input id="dark-v10" type="radio" name="rtoggle" value="dark" />
+      <label for="dark-v10">dark</label>
+      <input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors" />
+      <label for="outdoors-v11">outdoors</label>
+      <input id="satellite-streets-v11" type="radio" name="rtoggle" value="satellite" />
+      <label for="satellite-streets-v11">satellite</label>
+    </div>
+      
     <!-- START: map screen -->
     <div id="mapBackground" class="background-screens" style="display:block;">   
        <div id="map" ></div>
@@ -504,39 +518,6 @@
       require('./renderer.js')
 
 
-      mapboxgl.accessToken = 'pk.eyJ1IjoiY29yb2xhcmkiLCJhIjoiY2tkN2l2dHltMDNmcjJ4cGNtamI1ano1aSJ9.TDO_vejWTmNAc2gnc3f7Dw';
-      var map00 = new mapboxgl.Map({
-      container: 'map00',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [2.2021, 41.4112],
-      zoom: 14
-      });
-      // Add geolocate control to the map.
-      map00.addControl(
-      new mapboxgl.GeolocateControl({
-      positionOptions: {
-      enableHighAccuracy: true
-      },
-      trackUserLocation: true
-      })
-      );
-
-      // Add navigation control to the map.
-      map00.addControl(new mapboxgl.NavigationControl());
-      
-      var Draw = new MapboxDraw();
-      map00.addControl(Draw, 'top-left');
-
-      var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-      '<br><a href="https://wimabooks.com" target="_blank">HOLA!</a><br><br><a href="https://wimabooks.com/maps/workspace" target="_blank">WORKING</a><br><br><a href="https://cityfov.com">FOR YOU</a><br>'
-      );
-      
-      var marker = new mapboxgl.Marker()
-      .setLngLat([2.2021, 41.4112])
-      .setPopup(popup)
-      .addTo(map00);
-
-      
     </script>
     <!--<script src="./renderer.js"></script>-->
   </body>

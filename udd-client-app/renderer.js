@@ -36,7 +36,64 @@ import Zoom from 'ol/control/Zoom';
 import Rotate from 'ol/control/Rotate';
 
 
+
+
 //JG INI
+var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+mapboxgl.accessToken = 'pk.eyJ1IjoiY29yb2xhcmkiLCJhIjoiY2tkN2l2dHltMDNmcjJ4cGNtamI1ano1aSJ9.TDO_vejWTmNAc2gnc3f7Dw';
+var map00 = new mapboxgl.Map({
+container: 'map00',
+style: 'mapbox://styles/mapbox/streets-v11',
+//style: 'mapbox://bithabitat/ckc09tyw700jd1ip7m70db10c',
+center: [2.2021, 41.4112],
+zoom: 14
+});
+
+//MENU layerBase
+var layerList = document.getElementById('menu');
+var inputs = layerList.getElementsByTagName('input');
+
+function switchLayer(layer) {
+var layerId = layer.target.id;console.log(layerId);
+//sendOSCMessageToServer("layersb", layerId);
+sendOSCMessageToServer("layersb", "light-v10");
+map00.setStyle('mapbox://styles/mapbox/' + layerId);
+////map00.setLayoutProperty('3d-buildings', 'visibility', 'visible');
+//map00.removeLayer('3d-buildings');
+//setTimeout(function() {put_layer3dB_0();},1000);
+}
+
+for (var i = 0; i < inputs.length; i++) {
+inputs[i].onclick = switchLayer;console.log(inputs[i]);
+}
+
+// Add geolocate control to the map.
+map00.addControl(
+new mapboxgl.GeolocateControl({
+positionOptions: {
+enableHighAccuracy: true
+},
+trackUserLocation: true
+})
+);
+
+// Add navigation control to the map.
+map00.addControl(new mapboxgl.NavigationControl());
+
+var Draw = new MapboxDraw();
+map00.addControl(Draw, 'top-left');
+
+var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+'<br><a href="https://wimabooks.com" target="_blank">HOLA!</a><br><br><a href="https://wimabooks.com/maps/workspace" target="_blank">WORKING</a><br><br><a href="https://cityfov.com">FOR YOU</a><br>'
+);
+
+var marker = new mapboxgl.Marker()
+.setLngLat([2.2021, 41.4112])
+.setPopup(popup)
+.addTo(map00);
+
+
+
 $('#control_map').click(function() {change_map();});
 $('#control_map2').click(function() {change_map2();});
 $('#control_map3').click(function() {change_map3();});
