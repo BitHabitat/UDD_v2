@@ -55,8 +55,8 @@ var inputs = layerList.getElementsByTagName('input');
 
 function switchLayer(layer) {
 var layerId = layer.target.id;console.log(layerId);
-//sendOSCMessageToServer("layersb", layerId);
-sendOSCMessageToServer("layersb", "light-v10");
+sendOSCMessageToServer("layersb", layerId);
+//sendOSCMessageToServer("layersb", "light-v10");
 map00.setStyle('mapbox://styles/mapbox/' + layerId);
 ////map00.setLayoutProperty('3d-buildings', 'visibility', 'visible');
 //map00.removeLayer('3d-buildings');
