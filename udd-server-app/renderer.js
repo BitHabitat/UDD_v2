@@ -883,8 +883,8 @@ function change_map(){
 }
 
 ipcRenderer.on('layersb', function(event, message){
-  //switchLayer0(message[0]);
-  switchLayer0("light-v10");
+  switchLayer0(message[0]);
+  //switchLayer0("light-v10");
 });
 function switchLayer0(layid) {console.log(layid);
   map00.setStyle('mapbox://styles/mapbox/' + layid);
