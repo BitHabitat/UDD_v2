@@ -16,19 +16,21 @@
     <style>
       #map00 {position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px;}
       #map {position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px;}
-      #control_map {position: absolute; bottom: 10px;background:#444;color:#fff;z-index:9;width:150px;text-align: center;}
+      #control_map {position: absolute; bottom: 10px;background:#444;color:#fff;z-index:9;padding:2px 15px;text-align: center;}
+	  a#mode_circle.active {background:#29AB87;}
+	  #mode_circle_val {background:transparent;display:inline-block;color:#fff;font-weight:600;width:50px;text-align:center;border:0px;box-shabow:0px;}
     </style>
     <title>UDD - Videowall</title>
   </head>
   <body>
 
 
-    <div id="map00"  style="display:inline-block;"></div>
     <div id="mapBackground" class="background-screens" style="display:block;">
-       <div id="map" ></div>
-       <p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p>
+       <div id="map" style="display:none;"></div>
+		<div id="map00"  style="display:inline-block;"></div>
+       <!--p><a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a></p-->
     </div>
-    <div id="control_map">CHANGE</div>
+    <div id="control_map" style="display:inline-block;"><a href="#" id="mode_circle">CERCLE PROXIMITAT: <input id="mode_circle_val" value="1000" type="number" /> m.</a></div>
 
     <!--<div id="layersActiveSidebar" style="width: 399px; height: 540px; background-color: #000000f2; position: absolute; top:0px; right: 0px; color: white">
         

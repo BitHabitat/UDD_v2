@@ -203,10 +203,34 @@ osc1.on('/screensaver', message => {
 
 //JG
 osc1.on('/map2', message => {
-  mainWindow.webContents.send('map2', message.args);
+  mainWindow.webContents.send('map2', message.args);console.log("map2");
 })
 osc1.on('/layersb', message => {
-  mainWindow.webContents.send('layersb', message.args);
+  mainWindow.webContents.send('layersb', message.args);console.log("layersb");
+})
+osc1.on('/viewmap00', message => {
+  console.log("viewmap");console.log(message.args);mainWindow.webContents.send('viewmap00', message.args);
+})
+osc1.on('/zoommap00', message => {
+  console.log("zoommap");console.log(message.args);mainWindow.webContents.send('zoommap00', message.args);
+})
+osc1.on('/centermap00', message => {
+  console.log("centermap");console.log(message.args);mainWindow.webContents.send('centermap00', message.args);
+})
+osc1.on('/bearingmap00', message => {
+  console.log("bearingmap");console.log(message.args);mainWindow.webContents.send('bearingmap00', message.args);
+})
+osc1.on('/pitchmap00', message => {
+  console.log("pitchmap");console.log(message.args);mainWindow.webContents.send('pitchmap00', message.args);
+})
+osc1.on('/circleclic00', message => {
+  console.log("circleclic00");mainWindow.webContents.send('circleclic00', message.args);
+})
+osc1.on('/circleclicval00', message => {
+  console.log("circleclicval00");mainWindow.webContents.send('circleclicval00', message.args);
+})
+osc1.on('/popupopen00', message => {
+  console.log("popupopen00");mainWindow.webContents.send('popup_open', message.args);
 })
 
 

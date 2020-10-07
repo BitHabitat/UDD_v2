@@ -52,16 +52,23 @@ mapBasic = new ol.Map({
   view: mapView,
   target: 'map'
 });
+  
 
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 //var mapboxgl = require("https://api.mapbox.com/mapbox-gl-js/v1.11.1/mapbox-gl.js");
 mapboxgl.accessToken = 'pk.eyJ1IjoiY29yb2xhcmkiLCJhIjoiY2tkN2l2dHltMDNmcjJ4cGNtamI1ano1aSJ9.TDO_vejWTmNAc2gnc3f7Dw';
+const MapboxCircle = require('mapbox-gl-circle');
 var map00;
+var myCircle;
+var icircles=0;
+var mode_circle=0;
+var circleradius=1000;
 map00 = new mapboxgl.Map({
   container: 'map00',
-  style: 'mapbox://styles/mapbox/streets-v11',
+  style: 'mapbox://styles/mapbox/light-v10',
   //style: 'mapbox://bithabitat/ckc09tyw700jd1ip7m70db10c',
   center: [2.2021, 41.4112],
+  bearing: -44.6,
   zoom: 14
   });
 
@@ -883,7 +890,7 @@ function change_map(){
 }
 
 ipcRenderer.on('layersb', function(event, message){
-  switchLayer0(message[0]);
+  switchLayer0(message[0]);console.log(message[0]);
   //switchLayer0("light-v10");
 });
 function switchLayer0(layid) {console.log(layid);
@@ -894,6 +901,52 @@ function switchLayer0(layid) {console.log(layid);
   //setTimeout(function() {put_layer3dB_0();},1000);
   }
   
+ipcRenderer.on('viewmap00', function(event, message){
+  var mapcCenter = [message[0], message[1]];
+  map00.setCenter(mapcCenter);
+  map00.setZoom(message[2]);
+  //map00.setBearing(message[3]);
+});
+ipcRenderer.on('zoommap00', function(event, message){
+  map00.setZoom(message[0]);
+});
+ipcRenderer.on('centermap00', function(event, message){console.log("move");
+  var mapcCenter = [message[0], message[1]];
+  map00.setCenter(mapcCenter);
+});
+ipcRenderer.on('bearingmap00', function(event, message){
+  map00.setBearing(message[0]);
+});
+ipcRenderer.on('pitchmap00', function(event, message){
+  map00.setPitch(message[0]);
+});
+
+
+ipcRenderer.on('popupopen00', function(event, message){
+    popup0(message[0],message[1],message[2]);
+    var marker0 = new mapboxgl.Marker()
+    .setLngLat([message[0], message[1]])
+    .setPopup(message[2])
+    .addTo(map00);
+});
+ipcRenderer.on('circleclic00', function(event, message){
+	circleclic(message[0], message[1], message[2]);
+});
+function circleclic(x,y,z) {
+	  if(icircles>0) {map00.removeLayer(myCircle);}
+	  myCircle = new MapboxCircle({lat: x, lng: y}, z, {
+			editable: true,
+			minRadius: z/2,
+			fillColor: '#29AB87'
+      }).addTo(map00);
+	  icircles++;
+}		
+ipcRenderer.on('circleclicval00', function(event, message){
+	document.getElementById("mode_circle_val").value=message[0];
+});
+
+
+     
 
 //JG FIN
 
