@@ -41,17 +41,26 @@ import Rotate from 'ol/control/Rotate';
 //JG INI
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 mapboxgl.accessToken = 'pk.eyJ1IjoiY29yb2xhcmkiLCJhIjoiY2tkN2l2dHltMDNmcjJ4cGNtamI1ano1aSJ9.TDO_vejWTmNAc2gnc3f7Dw';
+const MapboxCircle = require('mapbox-gl-circle');
 var map00 = new mapboxgl.Map({
 container: 'map00',
-style: 'mapbox://styles/mapbox/streets-v11',
+style: 'mapbox://styles/mapbox/light-v10',
 //style: 'mapbox://bithabitat/ckc09tyw700jd1ip7m70db10c',
 center: [2.2021, 41.4112],
+bearing: -44.6,
 zoom: 14
 });
 
 //MENU layerBase
 var layerList = document.getElementById('menu');
 var inputs = layerList.getElementsByTagName('input');
+var myCircle;
+var icircles=0;
+var mode_circle=0;
+var circleradius=1000;
+
+$('#mode_circle').click(function() {mode_circle=1-mode_circle;if(mode_circle==1) {this.classList.add("active");} else {this.classList.remove("active");}});
+
 
 function switchLayer(layer) {
 var layerId = layer.target.id;console.log(layerId);
@@ -83,14 +92,23 @@ map00.addControl(new mapboxgl.NavigationControl());
 var Draw = new MapboxDraw();
 map00.addControl(Draw, 'top-left');
 
+var popup_cont='<br><a href="https://wimabooks.com" target="_blank">HOLA!</a><br><br><a href="https://wimabooks.com/maps/workspace" target="_blank">WORKING</a><br><br><a href="https://cityfov.com">FOR YOU</a><br>';
 var popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
-'<br><a href="https://wimabooks.com" target="_blank">HOLA!</a><br><br><a href="https://wimabooks.com/maps/workspace" target="_blank">WORKING</a><br><br><a href="https://cityfov.com">FOR YOU</a><br>'
+	popup_cont
 );
 
 var marker = new mapboxgl.Marker()
 .setLngLat([2.2021, 41.4112])
-.setPopup(popup)
-.addTo(map00);
+.setPopup(popup);
+//.addTo(map00);
+
+/*marker.getElement().addEventListener('click', () => {
+  //alert("Clicked");//doPopUp(marker.getLngLat());
+  var mapcCenter = [marker.getLngLat().lng, marker.getLngLat().lat]
+  map00.setCenter(mapcCenter);
+  //doPopUp(this.getLngLat().lng, this.getLngLat().lat, popup_cont);
+  sendOSCMessageToServer(2.2021, 41.4112, popup_cont);
+});*/
 
 
 
@@ -135,6 +153,9 @@ function change_map(){
   //  osc.send(message); 
   //} 
 }
+
+
+
 //JG FI
 
 //Read config file
@@ -415,12 +436,81 @@ function initMain(){
   mapBasic.on('click', showInfo);
 
   mapBasic.on('moveend', sendOSCMapView);
+  
+  //map00.rotateTo(44.6)
+    //map00.on('move', sendOSCMapView00);
+	map00.on('move', () => {sendOSCMapView00();});
+	//map00.on('zoom', function() {sendOSCMapZoom00();});
+	map00.on('click', function (e) {
+      map00.flyTo({
+        center: [e.lngLat.lng, e.lngLat.lat],
+        zoom: 14,
+        //bearing: 0,
+      });
+	  if(mode_circle==1) {
+	  //if(icircles>0) {map00.removeLayer(myCircle);}
+	  map00.removeLayer(myCircle);
+	  myCircle = new MapboxCircle({lat: e.lngLat.lat, lng: e.lngLat.lng}, circleradius, {
+			editable: true,
+			minRadius: circleradius/2,
+			fillColor: '#29AB87'
+      }).addTo(map00);
+	  icircles++;
+		myCircle.on('centerchanged', function (circleObj) {
+				console.log('New center:', circleObj.getCenter());
+			});
+		myCircle.once('radiuschanged', function (circleObj) {
+				console.log('New radius (once!):', circleObj.getRadius());
+				document.getElementById("mode_circle_val").value=circleObj.getRadius();circleradius=circleObj.getRadius();
+				sendOSCCircleVal00(circleObj.getRadius());
+			});
+		myCircle.on('click', function (mapMouseEvent) {
+				console.log('Click:', mapMouseEvent.point);
+			});
+		myCircle.on('contextmenu', function (mapMouseEvent) {
+				console.log('Right-click:', mapMouseEvent.lngLat);
+			});	 
+		sendOSCCircle00(e.lngLat.lat, e.lngLat.lng, circleradius);
+	  }			
+	});
 
+  
   downloadAndSaveData();
-
-
-
 }
+
+function sendOSCCircle00(x,y,z){//alert(map00.getZoom().toFixed(2));
+    const message = new OSC.Message('/circleclic00', x,y,z);
+	//const message = new OSC.Message('/zoommap00', 14);
+    osc.send(message); 
+}
+function sendOSCCircleVal00(x){//alert(map00.getZoom().toFixed(2));
+    const message = new OSC.Message('/circleclicval00', x);
+	//const message = new OSC.Message('/zoommap00', 14);
+    osc.send(message); 
+}
+
+function sendOSCMapZoom00(){//alert(map00.getZoom().toFixed(2));
+    const message = new OSC.Message('/zoommap00', map00.getZoom().toFixed(2));
+	//const message = new OSC.Message('/zoommap00', 14);
+    osc.send(message); 
+}
+function sendOSCMapCenter00(){
+    const message = new OSC.Message('/centermap00', map00.getCenter().lng, map00.getCenter().lat);
+    osc.send(message); 
+}
+function sendOSCMapBearing00(){
+    const message = new OSC.Message('/bearingmap00', map00.getBearing().toFixed(0));
+    osc.send(message); 
+}
+function sendOSCMapPitch00(){
+    const message = new OSC.Message('/pitchmap00', map00.getPitch().toFixed(0));
+    osc.send(message); 
+}
+function sendOSCMapView00(){
+	sendOSCMapCenter00();
+	setTimeout(function() {sendOSCMapZoom00();setTimeout(function() {sendOSCMapBearing00();setTimeout(function() {sendOSCMapPitch00();},100);},100);},100);
+}
+
 
 function checkAllDataIsLoaded(){
   if(loadedComercialData && loadedHospitalsData && loadedPharmacyData && loadedMarketsData){
@@ -680,7 +770,7 @@ $('#pharmacyButton').change(function() {
   checkFeatureClicked(layerFarmaciaParams, "#pharmacyButton");    
   
 
-  if(layerFarmaciaParams.layerActive){
+  if(layerFarmaciaParams.layerActive){map00.addLayer(farmaciesLayer);
     sendOSCMessageToServer("layer", 0);
   }else{
     sendOSCMessageToServer("layer", 1);
